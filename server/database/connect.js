@@ -13,3 +13,6 @@ mongoose
   .catch((error) => {
     console.log('connection unsuccessful');
   });
+
+// mongoose.connect('mongodb://localhost:27017/collection name')
+//.then(() =>{console.log('connection on')}).catch((err)=>{console.log('err')})
