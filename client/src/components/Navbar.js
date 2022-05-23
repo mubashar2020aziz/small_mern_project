@@ -1,13 +1,19 @@
 import React from 'react';
-
+import { NavLink } from 'react-router-dom';
 const Navbar = () => {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#//">
-            Mern Developer
-          </a>
+          <NavLink className="navbar-brand" to="/">
+            <img
+              src="assets/img/business logo design.png"
+              alt="logo"
+              width="80px"
+              height="40px"
+              className="ms-5"
+            />
+          </NavLink>
           <button
             className="navbar-toggler"
             type="button"
@@ -25,32 +31,32 @@ const Navbar = () => {
               style={{ bsScrollHeight: '100px' }}
             >
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/link">
+                <NavLink className="nav-link active" aria-current="page" to="/">
                   Home
-                </a>
+                </NavLink>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/down">
+                <NavLink className="nav-link" to="/about">
                   About
-                </a>
+                </NavLink>
               </li>
 
               <li className="nav-item">
-                <a className="nav-link" href="/down">
+                <NavLink className="nav-link" to="/contact">
                   Contact
-                </a>
+                </NavLink>
               </li>
 
               <li className="nav-item">
-                <a className="nav-link" href="/down">
+                <NavLink className="nav-link" to="/login">
                   Login
-                </a>
+                </NavLink>
               </li>
 
               <li className="nav-item">
-                <a className="nav-link" href="/down">
+                <NavLink className="nav-link" to="/signup">
                   Registration
-                </a>
+                </NavLink>
               </li>
             </ul>
           </div>
