@@ -1,26 +1,27 @@
 const dotenv = require('dotenv').config({ path: './.env' });
 const express = require('express');
 const app = express();
+const cors = require('cors');
+const morgan = require('morgan');
 const port = process.env.PORT;
 require('./database/connect');
+const User = require('./models/userSchema');
 
-// middleware
-const middleware = (req, res, next) => {
-  console.log('hello my middle ware');
-  next();
-};
+//route
+const userRoute = require('./router/auth');
+app.use('/api/user', userRoute);
+
+//middleware
+app.use(cors());
+app.use(morgan('dev'));
+app.use(express.json());
 
 app.get('/', (req, res) => {
   return res.status(200).json({
     status: true,
-    message: 'Hello world',
+    message: 'hello world',
   });
 });
-
-app.get('/about', middleware, (req, res) => {
-  res.send('Hello about the world....');
-});
-
 app.listen(port, () => {
   console.log('start server:' + port);
 });
