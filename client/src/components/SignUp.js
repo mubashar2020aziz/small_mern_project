@@ -4,10 +4,14 @@ const SignUp = () => {
   return (
     <>
       <div className="container">
-        <div className="row pt-5 ">
-          <div className="col-md-12 ">
-            <div className="card">
+        <div className="row pt-5 d-flex justify-content-center">
+          <div className="col-md-8 ">
+            <div
+              className="card shadow-lg rounded"
+              style={{ border: 'none', outline: 'none' }}
+            >
               <h4
+                className="header"
                 style={{
                   alignItems: 'center',
                   marginTop: '20px',
@@ -18,7 +22,7 @@ const SignUp = () => {
               >
                 SignUp
               </h4>
-              <div className="card-body ">
+              <div className="card-body">
                 <div className="row ">
                   <div className="col-md-6">
                     <form>
@@ -42,7 +46,7 @@ const SignUp = () => {
                         <input
                           type="Email"
                           class="form-control"
-                          id="Email"
+                          id="email"
                           name="email"
                           placeholder="Email"
                           autoComplete="off"
@@ -118,7 +122,12 @@ const SignUp = () => {
                         />
                       </div>
 
-                      <button type="submit" class="btn btn-primary">
+                      <button
+                        type="submit"
+                        name="signup"
+                        id="signup"
+                        class="btn btn-primary"
+                      >
                         Submit
                       </button>
                     </form>
