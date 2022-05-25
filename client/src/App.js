@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/home/Home';
 import About from './components/About';
 import Contact from './components/Contact';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
+// import ErrorPage from './components/ErrorPage';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route exact path="/contact" element={<Contact />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<SignUp />} />
+        <Route exact path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
   );
