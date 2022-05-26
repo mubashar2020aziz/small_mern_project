@@ -4,17 +4,20 @@ const bodyParser = require('body-parser');
 const User = require('./../models/userSchema');
 require('../database/connect');
 const bcrypt = require('bcrypt');
+const authenticate = require('../middleware/authenticate');
+const cookieParser = require('cookie-parser');
 
 //middleware
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
+router.use(cookieParser());
 
-router.get('/', (req, res) => {
-  return res.status(200).json({
-    status: true,
-    message: 'Hello world',
-  });
-});
+// router.get('/', (req, res) => {
+//   return res.status(200).json({
+//     status: true,
+//     message: 'Hello world',
+//   });
+// });
 // usr promise method
 // router.post('/register', (req, res) => {
 //     //usr fill properly or not
@@ -63,8 +66,8 @@ router.get('/', (req, res) => {
 
 router.post('/register', async (req, res) => {
   //user fill properly form
-  const { username, email, phone, work, password, cpassword } = req.body;
-  if (!username || !email || !phone || !work || !password || !cpassword) {
+  const { name, email, number, work, password, cpassword } = req.body;
+  if (!name || !email || !number || !work || !password || !cpassword) {
     return res.status(422).json({
       status: false,
       message: 'fill form properly',
@@ -83,9 +86,9 @@ router.post('/register', async (req, res) => {
     }
     //now enter new user
     const user = new User({
-      username,
+      name,
       email,
-      phone,
+      number,
       work,
       password,
       cpassword,
@@ -150,5 +153,18 @@ router.post('/login', async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+});
+
+//about us ka page
+
+router.get('/about', authenticate, (req, res) => {
+  // console.log('hello my about');
+  res.send(req.rootUser);
+
+  // get user data on contact us page home page
+  router.get('/getdata', authenticate, (req, res) => {
+    // console.log('hello dear contact');
+    res.send(req.rootUser);
+  });
 });
 module.exports = router;

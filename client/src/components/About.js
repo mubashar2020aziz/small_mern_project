@@ -1,10 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const About = () => {
+  const history = useNavigate();
+  const [userData, setUserData] = useState({});
+  const callAboutPage = async () => {
+    try {
+      const res = await fetch('/api/user/about', {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        // credentials use for send token
+        credentials: 'include',
+      });
+      const data = await res.json();
+      // console.log(data);
+      setUserData(data);
+
+      if (!res.status === 200) {
+        const error = new Error(res.error);
+        throw error;
+      }
+    } catch (error) {
+      console.log(error);
+      history('/login');
+    }
+  };
+  useEffect(() => {
+    callAboutPage();
+  });
   return (
     <>
       <div className="container">
-        <form method="">
+        <form method="GET">
           <div
             className="row d-flex justify-content-center"
             style={{ marginTop: '50px' }}
@@ -27,13 +57,17 @@ const About = () => {
                       <p style={{ marginBottom: '10px' }}>Video Editor</p>
                     </div>
                     <div className="col-md-5">
-                      <h5>MUBASHAR AZIZ</h5>
-                      <h6>Web Developer</h6>
+                      <h5>{userData.name}</h5>
+                      <h6>{userData.work}</h6>
 
-                      <ul class="nav nav-tabs my-5" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
+                      <ul
+                        className="nav nav-tabs my-5"
+                        id="myTab"
+                        role="tablist"
+                      >
+                        <li className="nav-item" role="presentation">
                           <button
-                            class="nav-link active"
+                            className="nav-link active"
                             id="home-tab"
                             data-bs-toggle="tab"
                             data-bs-target="#home"
@@ -45,9 +79,9 @@ const About = () => {
                             About
                           </button>
                         </li>
-                        <li class="nav-item" role="presentation">
+                        <li className="nav-item" role="presentation">
                           <button
-                            class="nav-link"
+                            className="nav-link"
                             id="profile-tab"
                             data-bs-toggle="tab"
                             data-bs-target="#profile"
@@ -60,9 +94,9 @@ const About = () => {
                           </button>
                         </li>
                       </ul>
-                      <div class="tab-content " id="myTabContent">
+                      <div className="tab-content " id="myTabContent">
                         <div
-                          class="tab-pane fade show active"
+                          className="tab-pane fade show active"
                           id="home"
                           role="tabpanel"
                           aria-labelledby="home-tab"
@@ -72,12 +106,12 @@ const About = () => {
                               marginBottom: '10px',
                             }}
                           >
-                            (User Id)
+                            (Id)
                             <span
                               className="text-primary"
                               style={{ paddingLeft: '30px' }}
                             >
-                              123456987
+                              {userData._id}
                             </span>
                           </p>
                           <p style={{ marginBottom: '10px' }}>
@@ -86,7 +120,7 @@ const About = () => {
                               className="text-primary"
                               style={{ paddingLeft: '30px' }}
                             >
-                              Mubashar Aziz
+                              {userData.name}
                             </span>
                           </p>
                           <p style={{ marginBottom: '10px' }}>
@@ -95,7 +129,7 @@ const About = () => {
                               className="text-primary"
                               style={{ paddingLeft: '30px' }}
                             >
-                              mubasharaziz@gmail.com
+                              {userData.email}
                             </span>
                           </p>
                           <p style={{ marginBottom: '10px' }}>
@@ -104,7 +138,7 @@ const About = () => {
                               className="text-primary"
                               style={{ paddingLeft: '30px' }}
                             >
-                              1234569
+                              {userData.number}
                             </span>
                           </p>
                           <p style={{ marginBottom: '10px' }}>
@@ -113,7 +147,7 @@ const About = () => {
                               className="text-primary"
                               style={{ paddingLeft: '30px' }}
                             >
-                              Web Developer
+                              {userData.work}
                             </span>
                           </p>
                         </div>
@@ -129,7 +163,7 @@ const About = () => {
                               className="text-primary"
                               style={{ paddingLeft: '30px' }}
                             >
-                              Web Developer
+                              {userData.work}
                             </span>
                           </p>
 

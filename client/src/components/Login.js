@@ -1,6 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IoAccessibilitySharp } from 'react-icons/io5';
+import { useNavigate } from 'react-router-dom';
+
 const Login = () => {
+  const history = useNavigate();
+  const [emails, setEmails] = useState({
+    email: '',
+    password: '',
+  });
+  let name, value;
+  const handleChange = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setEmails({ ...emails, [name]: value });
+  };
+
+  const loginUser = async (e) => {
+    const { email, password } = emails;
+
+    e.preventDefault();
+    const res = await fetch('/api/user/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/Json' },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    const data = await res.json();
+    if (data.status === 400 || !data) {
+      window.alert('invalid Login');
+    } else {
+      window.alert('Valid Login');
+
+      history('/');
+    }
+  };
+
   return (
     <>
       <div className="container">
@@ -43,7 +80,7 @@ const Login = () => {
                       Sign In
                     </h4>
 
-                    <form>
+                    <form method="POST">
                       <div class="mb-3">
                         <input
                           type="email"
@@ -52,6 +89,8 @@ const Login = () => {
                           name="email"
                           placeholder="Email"
                           autoComplete="off"
+                          value={emails.email}
+                          onChange={handleChange}
                           style={{
                             border: 'none',
                             outLine: 'none',
@@ -68,6 +107,8 @@ const Login = () => {
                           name="password"
                           placeholder="password"
                           autoComplete="off"
+                          value={emails.password}
+                          onChange={handleChange}
                           style={{
                             border: 'none',
                             outLine: 'none',
@@ -78,9 +119,11 @@ const Login = () => {
 
                       <button
                         type="submit"
-                        name="signup"
-                        id="signup"
+                        name="signin"
+                        id="signin"
+                        value="Log In"
                         className="btn btn-primary"
+                        onClick={loginUser}
                       >
                         Login In
                       </button>
