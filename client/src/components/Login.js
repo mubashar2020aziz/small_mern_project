@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { IoAccessibilitySharp } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../App';
 
 const Login = () => {
+  const { state, dispatch } = useContext(UserContext);
   const history = useNavigate();
   const [emails, setEmails] = useState({
     email: '',
@@ -32,6 +34,7 @@ const Login = () => {
     if (data.status === 400 || !data) {
       window.alert('invalid Login');
     } else {
+      dispatch({ type: 'USER', payload: true });
       window.alert('Valid Login');
 
       history('/');
@@ -81,7 +84,7 @@ const Login = () => {
                     </h4>
 
                     <form method="POST">
-                      <div class="mb-3">
+                      <div className="mb-3">
                         <input
                           type="email"
                           className="form-control"
@@ -99,7 +102,7 @@ const Login = () => {
                         />
                       </div>
 
-                      <div class="mb-3">
+                      <div className="mb-3">
                         <input
                           type="password"
                           className="form-control"

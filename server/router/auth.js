@@ -167,4 +167,49 @@ router.get('/about', authenticate, (req, res) => {
     res.send(req.rootUser);
   });
 });
+
+// contact us page backend
+
+router.post('/contact', authenticate, async (req, res) => {
+  try {
+    const { name, email, number, message } = req.body;
+    if (!name || !email || !number || !message) {
+      console.log('error in contact foam');
+      return res.status(400).json({
+        status: false,
+        message: 'plz fill the message foarm',
+      });
+    } else {
+      return res.status(200).json({
+        status: true,
+        message: 'foam fill successfully',
+      });
+    }
+    //use User of Schema folder and req.userID take from auth fol
+    const userContact = await User.findOne({ _id: req.userID });
+    // add message data to email folder
+    if (userContact) {
+      const userMessage = await userContact.addMessage(
+        name,
+        email,
+        number,
+        message
+      );
+      await userContact.save();
+      res
+        .status(201)
+        .json({ status: true, message: 'user send message successfully' });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+//logout ka page
+
+router.get('/logout', (req, res) => {
+  console.log('hello my logout page');
+  res.clearCookie('jwtoken', { path: '/' });
+  res.status(200).send('user logout');
+});
 module.exports = router;

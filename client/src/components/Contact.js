@@ -6,7 +6,12 @@ import {
 } from 'react-icons/bs';
 
 const Contact = () => {
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    number: '',
+    message: '',
+  });
   const userContact = async () => {
     try {
       const res = await fetch('/api/user/getdata', {
@@ -19,8 +24,13 @@ const Contact = () => {
       });
 
       const data = await res.json();
-      // console.log(data);
-      setUserData(data);
+      //console.log(data);
+      setUserData({
+        ...userData,
+        name: data.name,
+        email: data.email,
+        number: data.number,
+      });
 
       if (!res.status === 200) {
         const error = new Error(res.err);
@@ -34,6 +44,33 @@ const Contact = () => {
   useEffect(() => {
     userContact();
   });
+
+  // storing data in useState hoot
+  const handleInputs = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setUserData({ ...userData, [name]: value });
+  };
+
+  //send data to backend
+
+  const contactForm = async (e) => {
+    e.preventDefault();
+    const { name, email, number, message } = userData;
+    const res = await fetch('/api/user/contact', {
+      method: 'POST',
+      headers: { 'Contact-Type': 'application/json' },
+      body: JSON.stringify({ name, email, number, message }),
+    });
+    const data = await res.json();
+    if (!data) {
+      console.log('message not send');
+    } else {
+      console.log('message send');
+      window.alert('message send');
+      setUserData({ ...userData, message: '' });
+    }
+  };
   return (
     <>
       <div className="container">
@@ -76,7 +113,7 @@ const Contact = () => {
           {/* end row */}
         </div>
         {/* second row */}
-        <form method="GET">
+        <form method="POST">
           <div className="row d-flex justify-content-center">
             <div className="col-md-8">
               <div className="card">
@@ -109,6 +146,7 @@ const Contact = () => {
                             placeholder="Your Name"
                             autoComplete="off"
                             value={userData.name}
+                            onChange={handleInputs}
                             style={{
                               border: 'none',
                               outline: 'none',
@@ -133,6 +171,7 @@ const Contact = () => {
                             placeholder="Your email"
                             autoComplete="off"
                             value={userData.email}
+                            onChange={handleInputs}
                             style={{
                               border: 'none',
                               outline: 'none',
@@ -160,6 +199,7 @@ const Contact = () => {
                             placeholder="Your Number"
                             autoComplete="off"
                             value={userData.number}
+                            onChange={handleInputs}
                             style={{
                               border: 'none',
                               outline: 'none',
@@ -178,25 +218,28 @@ const Contact = () => {
                         style={{ border: 'none', outline: 'none' }}
                       >
                         <div className="card-body">
-                          <form method="GET">
-                            <div className="mb-3">
-                              <input
-                                type="message"
-                                className="form-control"
-                                id="message"
-                                name="message"
-                                placeholder="Message"
-                                style={{
-                                  height: '70px',
-                                  border: 'none',
-                                  outline: 'none',
-                                }}
-                              />
-                            </div>
-                            <button type="submit" className="btn btn-primary">
-                              Send Message
-                            </button>
-                          </form>
+                          <div className="mb-3">
+                            <textarea
+                              className="form-control"
+                              id="message"
+                              name="message"
+                              placeholder="Message"
+                              value={userData.message}
+                              onChange={handleInputs}
+                              style={{
+                                height: '70px',
+                                border: 'none',
+                                outline: 'none',
+                              }}
+                            />
+                          </div>
+                          <button
+                            type="submit"
+                            className="btn btn-primary"
+                            onClick={contactForm}
+                          >
+                            Send Message
+                          </button>
                         </div>
                       </div>
                     </div>

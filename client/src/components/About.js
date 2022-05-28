@@ -152,7 +152,7 @@ const About = () => {
                           </p>
                         </div>
                         <div
-                          class="tab-pane fade"
+                          className="tab-pane fade"
                           id="profile"
                           role="tabpanel"
                           aria-labelledby="profile-tab"
